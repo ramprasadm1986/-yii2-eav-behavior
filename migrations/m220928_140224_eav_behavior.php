@@ -1,13 +1,17 @@
 <?php
-
 namespace ramprasadm1986\eav\migrations;
-
 use yii\db\Migration;
 
-class m220923_142135_eav_behavior extends Migration
+/**
+ * Class m220928_140224_eav_behavior
+ */
+class m220928_140224_eav_behavior extends Migration
 {
+    /**
+     * {@inheritdoc}
+     */
     public function safeUp()
-    {   
+    {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
@@ -35,6 +39,9 @@ class m220923_142135_eav_behavior extends Migration
         $this->addForeignKey('{{%ent_attr}}', '{{%eav_attributes}}', ['class_id'], '{{%eav_entity}}', ['id'], 'cascade', 'cascade');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function safeDown()
     {
         $this->dropTable('{{%eav_values}}');
@@ -51,7 +58,7 @@ class m220923_142135_eav_behavior extends Migration
 
     public function down()
     {
-        echo "M170707092712Eav_attributes cannot be reverted.\n";
+        echo "m220928_140224_eav_behavior cannot be reverted.\n";
 
         return false;
     }
