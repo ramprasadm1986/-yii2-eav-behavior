@@ -1,1 +1,1 @@
-# -yii2-eav-behavior
+# yii2-eav-behavior
