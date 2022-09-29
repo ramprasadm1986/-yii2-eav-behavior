@@ -7,12 +7,20 @@ use Yii;
 /**
  * This is the model class for table "eav_attributes".
  *
- * @property integer $id
- * @property integer $class_id
- * @property string $attribute
+ * @property int $id
+ * @property int|null $class_id
+ * @property string|null $attribute
+ * @property string|null $attribute_group
+ * @property string|null $attribute_sub_group
+ * @property string|null $attribute_type
+ * @property string|null $attribute_label
+ * @property string|null $attribute_options
+ * @property int|null $min
+ * @property int|null $max
+ * @property int|null $is_required
  *
  * @property EavEntity $class
- * @property EavValues[] $eavValues
+ * @property EavValue[] $eavValues
  */
 class EavAttributes extends \yii\db\ActiveRecord
 {
@@ -30,8 +38,9 @@ class EavAttributes extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['class_id'], 'integer'],
-            [['attribute'], 'string', 'max' => 255],
+            [['class_id', 'min', 'max', 'is_required'], 'integer'],
+            [['attribute_options'], 'string'],
+            [['attribute', 'attribute_group', 'attribute_sub_group', 'attribute_type', 'attribute_label'], 'string', 'max' => 255],
             [['class_id'], 'exist', 'skipOnError' => true, 'targetClass' => EavEntity::className(), 'targetAttribute' => ['class_id' => 'id']],
         ];
     }
@@ -42,9 +51,17 @@ class EavAttributes extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'class_id' => 'Class ID',
-            'attribute' => 'Attribute',
+            'id' => Yii::t('app', 'ID'),
+            'class_id' => Yii::t('app', 'Class ID'),
+            'attribute' => Yii::t('app', 'Attribute'),
+            'attribute_group' => Yii::t('app', 'Attribute Group'),
+            'attribute_sub_group' => Yii::t('app', 'Attribute Sub Group'),
+            'attribute_type' => Yii::t('app', 'Attribute Type'),
+            'attribute_label' => Yii::t('app', 'Attribute Label'),
+            'attribute_options' => Yii::t('app', 'Attribute Options'),
+            'min' => Yii::t('app', 'Min'),
+            'max' => Yii::t('app', 'Max'),
+            'is_required' => Yii::t('app', 'Is Required'),
         ];
     }
 

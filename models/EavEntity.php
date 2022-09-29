@@ -50,4 +50,12 @@ class EavEntity extends \yii\db\ActiveRecord
     {
         return $this->hasMany(EavAttributes::className(), ['class_id' => 'id']);
     }
+    
+     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEavAttributesWithCondition($condition)
+    {
+        return $this->hasMany(EavAttributes::className(), ['class_id' => 'id'])->andOnCondition($condition);;
+    }
 }

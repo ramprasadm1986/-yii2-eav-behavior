@@ -13,10 +13,22 @@ class EavBehavior extends AttributeBehavior
 
     protected $_values;
     public $model_id = 'id';
-    private $_classname;
+    public $_classname;
     private $_entity;
+    private $_attributesObjList;
     private $_attributes;
-
+    public $_attributesLabels =[];
+    
+    public function init(){
+     
+        $entity = EavEntity::find()->where(['class' => $this->_classname])->one();
+        if(!$entity){
+            $entity = new EavEntity();
+            $entity->class = $this->_classname;
+            $entity->save();
+        }
+        $this->_attributesObjList = $entity->getEavAttributes()->all();
+    }
     public function events() {
         return [
             ActiveRecord::EVENT_AFTER_FIND => 'eavAfterFind',
@@ -26,16 +38,27 @@ class EavBehavior extends AttributeBehavior
             ActiveRecord::EVENT_AFTER_DELETE => 'eavAfterDelete'
         ];
     }
-
+    
     public function eavInit() {
-        $this->_attributes = $this->owner->additionalAttributes();
-        foreach ($this->_attributes as $attribute){
-            $this->_values[$attribute] = FALSE;
+        $this->_entity = EavEntity::find()->where(['class' => $this->_classname])->one(); 
+        $this->_attributesObjList = $this->_entity->getEavAttributes()->all();
+        foreach ($this->_attributesObjList as $attribute){
+            $this->_attributes[]=$attribute->attribute;
+            $this->_attributesLabels[$attribute->attribute]=$attribute->attribute_label;
+            $this->_values[$attribute->attribute] = FALSE;
+            if(get_class($this->owner)===$this->_classname){
+                if($attribute->is_required)
+                $this->owner->addRule([$attribute->attribute],'required');
+            }
+            
         }
-        $this->_classname = $this->owner->className();
-        $this->_entity = EavEntity::find()->where(['class' => $this->_classname])->one();
+        
     }
-
+    
+    public function EavAttributeLabels(){
+        return $this->_attributesLabels;
+    }
+   
     public function canGetProperty($name, $checkVars = true) {
         return in_array($name, $this->_attributes);
     }
@@ -104,6 +127,11 @@ class EavBehavior extends AttributeBehavior
                 }
             }
         }
+    }
+    
+    public function AllEavAttributes($condition=[]){
+        
+        return $this->_entity->getEavAttributesWithCondition($condition)->all();
     }
 
 }
