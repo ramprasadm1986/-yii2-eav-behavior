@@ -54,8 +54,10 @@ class EavEntity extends \yii\db\ActiveRecord
      /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEavAttributesWithCondition($condition)
+    public function getEavAttributesWithCondition($condition,$groupby,$orderby)
     {
-        return $this->hasMany(EavAttributes::className(), ['class_id' => 'id'])->andOnCondition($condition);;
+        return $this->hasMany(EavAttributes::className(), ['class_id' => 'id'])->andOnCondition($condition)->groupBy($groupby)->orderBy($orderby);;
     }
+
+    
 }

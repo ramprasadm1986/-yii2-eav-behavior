@@ -45,7 +45,11 @@ class EavBehavior extends AttributeBehavior
         foreach ($this->_attributesObjList as $attribute){
             $this->_attributes[]=$attribute->attribute;
             $this->_attributesLabels[$attribute->attribute]=$attribute->attribute_label;
-            $this->_values[$attribute->attribute] = FALSE;
+            if(in_array($attribute->attribute_type,['number','int','integer','float','decimal','numeric','double']))
+                $this->_values[$attribute->attribute] = 0;
+            else
+                $this->_values[$attribute->attribute] = null;
+            
             if(get_class($this->owner)===$this->_classname){
                 if($attribute->is_required)
                 $this->owner->addRule([$attribute->attribute],'required');
@@ -129,9 +133,9 @@ class EavBehavior extends AttributeBehavior
         }
     }
     
-    public function AllEavAttributes($condition=[]){
+    public function AllEavAttributes($condition=[],$group=[],$order=[]){
         
-        return $this->_entity->getEavAttributesWithCondition($condition)->all();
+        return $this->_entity->getEavAttributesWithCondition($condition,$group,$order)->all();
     }
 
 }

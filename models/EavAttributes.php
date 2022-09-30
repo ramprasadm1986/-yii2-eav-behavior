@@ -12,6 +12,7 @@ use Yii;
  * @property string|null $attribute
  * @property string|null $attribute_group
  * @property string|null $attribute_sub_group
+ * @property string|null $group_attrib
  * @property string|null $attribute_type
  * @property string|null $attribute_label
  * @property string|null $attribute_options
@@ -40,7 +41,7 @@ class EavAttributes extends \yii\db\ActiveRecord
         return [
             [['class_id', 'min', 'max', 'is_required'], 'integer'],
             [['attribute_options'], 'string'],
-            [['attribute', 'attribute_group', 'attribute_sub_group', 'attribute_type', 'attribute_label'], 'string', 'max' => 255],
+            [['attribute', 'attribute_group', 'attribute_sub_group', 'group_attrib', 'attribute_type', 'attribute_label'], 'string', 'max' => 255],
             [['class_id'], 'exist', 'skipOnError' => true, 'targetClass' => EavEntity::className(), 'targetAttribute' => ['class_id' => 'id']],
         ];
     }
@@ -56,6 +57,7 @@ class EavAttributes extends \yii\db\ActiveRecord
             'attribute' => Yii::t('app', 'Attribute'),
             'attribute_group' => Yii::t('app', 'Attribute Group'),
             'attribute_sub_group' => Yii::t('app', 'Attribute Sub Group'),
+            'group_attrib'=> Yii::t('app', 'Attribute View Group'),
             'attribute_type' => Yii::t('app', 'Attribute Type'),
             'attribute_label' => Yii::t('app', 'Attribute Label'),
             'attribute_options' => Yii::t('app', 'Attribute Options'),
