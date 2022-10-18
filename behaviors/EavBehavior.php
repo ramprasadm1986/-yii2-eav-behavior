@@ -46,7 +46,7 @@ class EavBehavior extends AttributeBehavior
             $this->_attributes[]=$attribute->attribute;
             $this->_attributesLabels[$attribute->attribute]=$attribute->attribute_label;
             if(in_array($attribute->attribute_type,['number','int','integer','float','decimal','numeric','double']))
-                $this->_values[$attribute->attribute] = 0;
+                $this->_values[$attribute->attribute] = null;
             else
                 $this->_values[$attribute->attribute] = null;
             
